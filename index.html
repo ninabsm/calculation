@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>서브웨이 수학 영수증 마스터 v4.9</title>
+    <title>써브웨이 혼합계산 마스터</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap');
         :root { --subway-green: #009223; --subway-yellow: #ffcb05; }
@@ -45,7 +45,7 @@
         <div class="receipt">
             <div id="stamp">결제완료</div>
             <div class="receipt-header">
-                <div class="receipt-logo">SUBWAY MATH</div>
+                <div class="receipt-logo">써브웨이 혼합계산 마스터</div>
                 <small id="r-order-no"></small>
             </div>
             <div id="receipt-items"></div>
@@ -124,7 +124,7 @@
         missionItems.forEach(item => {
             itemHtml += `<div class="receipt-item"><div class="item-main"><span>${item.name}</span><span>x ${item.qty}</span></div>`;
             if(item.top !== "추가없음") itemHtml += `<div class="item-sub"><span>└ ${item.top}</span></div>`;
-            else itemHtml += `<div class="item-sub"><span>└ 토핑 선택 안함</span></div>`;
+            else itemHtml += `<div class="item-sub"><span>└ 토핑 없음</span></div>`;
             if(item.discount > 0) itemHtml += `<div class="discount-line">└ 메뉴 할인: -${item.discount}</div>`;
             itemHtml += `</div>`;
             imgHtml += `<div class="img-card"><img src="${item.img}" onerror="this.src='https://via.placeholder.com/300x180?text=IMG'"><span class="img-label">${item.name}</span></div>`;

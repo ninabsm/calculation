@@ -6,37 +6,58 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap');
         :root { --subway-green: #009223; --subway-yellow: #ffcb05; }
-        body { background-color: #d1d1d1; font-family: 'Noto Sans KR', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .app-container { display: flex; gap: 40px; max-width: 1400px; width: 98%; align-items: flex-start; }
-        .left-panel { display: flex; flex-direction: column; gap: 20px; width: 420px; flex-shrink: 0; }
-        .receipt { background-color: #ffffff; width: 100%; padding: 35px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); position: relative; font-family: 'Courier Prime', monospace; color: #333; overflow: hidden; min-height: 580px; box-sizing: border-box; border-bottom: 5px solid #eee; }
-        .receipt::before { content: ""; position: absolute; top: -15px; left: 0; width: 100%; height: 15px; background: linear-gradient(-45deg, #d1d1d1 5px, transparent 0), linear-gradient(45deg, #d1d1d1 5px, transparent 0); background-size: 10px 15px; }
-        .receipt-header { text-align: center; border-bottom: 2px dashed #999; padding-bottom: 20px; margin-bottom: 25px; }
-        .receipt-logo { font-weight: bold; font-size: 2.2rem; color: var(--subway-green); }
-        .receipt-item { margin-bottom: 20px; font-size: 1.3rem; } 
+        body { background-color: #d1d1d1; font-family: 'Noto Sans KR', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        
+        .app-container { display: flex; gap: 25px; max-width: 1400px; width: 100%; align-items: flex-start; }
+        
+        /* 🧾 왼쪽 패널 (영수증 + 타이머 + 키패드 + 기록) */
+        .left-panel { flex-shrink: 0; width: 380px; display: flex; flex-direction: column; gap: 12px; }
+        .receipt { background-color: #ffffff; width: 100%; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); position: relative; font-family: 'Courier Prime', monospace; color: #333; min-height: 420px; box-sizing: border-box; }
+        .receipt::before { content: ""; position: absolute; top: -10px; left: 0; width: 100%; height: 10px; background: linear-gradient(-45deg, #d1d1d1 5px, transparent 0), linear-gradient(45deg, #d1d1d1 5px, transparent 0); background-size: 10px 10px; }
+        .receipt-title { text-align: center; font-size: 1.8rem; font-weight: bold; color: var(--subway-green); margin-bottom: 5px; }
+        .receipt-header { text-align: center; border-bottom: 2px dashed #bbb; padding-bottom: 10px; margin-bottom: 15px; color: #777; font-size: 0.85rem; }
+        .receipt-item { margin-bottom: 15px; font-size: 1.15rem; }
         .item-main { display: flex; justify-content: space-between; font-weight: bold; }
-        .item-sub { display: flex; justify-content: space-between; font-size: 1.1rem; padding-left: 20px; color: #555; }
-        .discount-line { color: #d32f2f; font-size: 1rem; padding-left: 20px; font-weight: bold; }
-        .divider { border-top: 1px dashed #ccc; margin: 25px 0; }
-        .status-board { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 15px; }
-        .timer-display { font-size: 2.5rem; font-weight: bold; color: #d32f2f; text-align: center; font-family: 'Courier Prime'; }
-        .score-display { font-size: 1.5rem; font-weight: bold; text-align: center; color: var(--subway-green); }
-        .timer-btns { display: flex; gap: 10px; justify-content: center; }
-        .btn-timer { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; background: #eee; font-weight: bold; font-family: 'Noto Sans KR'; }
-        #stamp { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); color: #d32f2f; border: 8px double #d32f2f; padding: 15px 30px; font-size: 3.5rem; font-weight: bold; display: none; z-index: 100; background: rgba(255,255,255,0.95); pointer-events: none; opacity: 0.9; }
-        .work-area { flex: 1; display: flex; flex-direction: column; gap: 25px; }
-        .image-display { background: white; padding: 30px; border-radius: 25px; display: flex; gap: 40px; justify-content: center; min-height: 250px; box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
-        .img-card { text-align: center; width: 300px; }
-        .img-card img { width: 100%; height: 180px; object-fit: contain; border-radius: 15px; display: block; margin: 0 auto; }
-        .img-label { font-size: 1.4rem; font-weight: bold; color: #333; display: block; margin-top: 15px; }
-        .menu-board { background: var(--subway-green); color: white; padding: 30px; border-radius: 25px; }
-        .price-section h5 { margin: 0 0 15px 0; color: var(--subway-yellow); font-size: 1.3rem; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 8px; }
-        .price-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; font-size: 1.1rem; }
-        .equation-area { background: white; padding: 35px; border-radius: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; }
-        input { width: 100%; padding: 22px; font-size: 2.2rem; border: 4px solid var(--subway-green); border-radius: 15px; margin-bottom: 25px; text-align: center; box-sizing: border-box; outline: none; font-family: 'Courier Prime'; }
-        .btn-group { display: flex; gap: 20px; }
-        .btn-pay { background: var(--subway-green); color: white; border: none; padding: 22px; font-size: 1.6rem; font-weight: bold; border-radius: 15px; cursor: pointer; flex: 2; }
-        .btn-next { background: #666; color: white; border: none; padding: 22px; font-size: 1.3rem; border-radius: 15px; cursor: pointer; flex: 1; }
+        .item-sub { display: flex; justify-content: space-between; font-size: 0.95rem; padding-left: 15px; color: #666; }
+        .discount-line { color: #d32f2f; font-size: 0.95rem; padding-left: 15px; font-weight: bold; }
+        .divider { border-top: 2px dashed #bbb; margin: 15px 0; }
+
+        .timer-box { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        #timerDisplay { font-size: 2.2rem; font-weight: bold; color: #d32f2f; font-family: 'Courier Prime'; }
+
+        .math-keypad { background: #333; padding: 12px; border-radius: 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .key { background: #f9f9f9; border: none; padding: 12px 0; border-radius: 8px; font-size: 1.3rem; font-weight: bold; cursor: pointer; font-family: 'Courier Prime'; }
+        .key:active { transform: scale(0.92); background: #ddd; }
+        .key.op { background: var(--subway-yellow); }
+        .key.move { background: #555; color: white; }
+        .key.del { background: #d32f2f; color: white; }
+        .key.back { background: #ff9800; color: white; }
+
+        .record-box { background: white; padding: 15px; border-radius: 15px; text-align: center; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .score-text { font-size: 1.3rem; font-weight: bold; color: var(--subway-green); }
+        .challenge-btns { display: flex; gap: 5px; justify-content: center; }
+        .btn-sm { padding: 8px 10px; font-size: 0.85rem; font-weight: bold; border-radius: 6px; border: 1px solid #ddd; cursor: pointer; background: #fdfdfd; }
+
+        /* 🟢 오른쪽 작업 영역 */
+        .work-area { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .image-display { background: white; padding: 40px; border-radius: 25px; display: flex; gap: 50px; justify-content: center; min-height: 300px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); box-sizing: border-box; }
+        .img-card { text-align: center; width: 350px; }
+        .img-card img { width: 100%; height: 220px; object-fit: contain; display: block; margin: 0 auto; }
+        .img-label { font-size: 1.6rem; font-weight: bold; color: #333; display: block; margin-top: 20px; }
+        
+        .menu-board { background: var(--subway-green); color: white; padding: 30px; border-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .board-title { display: flex; align-items: center; gap: 10px; font-size: 1.4rem; font-weight: bold; color: var(--subway-yellow); margin-bottom: 15px; }
+        .price-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; margin-bottom: 20px; }
+        .price-row.last { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+        
+        .equation-area { background: white; padding: 30px; border-radius: 25px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); position: relative; }
+        #userEq { width: 100%; padding: 20px; font-size: 2.5rem; border: 4px solid var(--subway-green); border-radius: 15px; text-align: center; font-family: 'Courier Prime'; outline: none; box-sizing: border-box; margin-bottom: 15px; background: #fdfdfd; }
+        
+        .main-action-group { display: flex; gap: 10px; }
+        .btn-pay { flex: 3; padding: 20px; background: var(--subway-green); color: white; border: none; border-radius: 12px; font-size: 1.6rem; font-weight: bold; cursor: pointer; }
+        .btn-next { flex: 1; padding: 20px; background: #666; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
+
+        #stamp { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); color: #d32f2f; border: 6px double #d32f2f; padding: 10px 20px; font-size: 3rem; font-weight: bold; display: none; z-index: 100; background: rgba(255,255,255,0.9); pointer-events: none; }
     </style>
 </head>
 <body>
@@ -44,48 +65,53 @@
     <div class="left-panel">
         <div class="receipt">
             <div id="stamp">결제완료</div>
-            <div class="receipt-header">
-                <div class="receipt-logo">SUBWAY MATH</div>
-                <small id="r-order-no"></small>
-            </div>
+            <div class="receipt-title">SUBWAY MATH</div>
+            <div class="receipt-header">ORDER #<span id="r-order-no">XXXX</span></div>
             <div id="receipt-items"></div>
             <div class="divider"></div>
             <div id="receipt-summary"></div>
-            <div id="mission-goal" style="background:#fff9c4; padding:20px; border-radius:12px; text-align:center; font-weight:bold; margin-top:25px; border:2px solid #fbc02d; font-size: 1.3rem;">❓ 얼마일까?</div>
+            <div id="mission-goal" style="background:#fff9c4; padding:12px; border-radius:8px; text-align:center; font-weight:bold; margin-top:10px; border:1px solid #fbc02d; font-size: 1rem;">❓ 미션을 받으세요</div>
         </div>
-        <div class="status-board">
-            <div class="timer-display" id="timer">00:00</div>
-            <div class="score-display">성공한 주문: <span id="score">0</span>건</div>
-            <div class="timer-btns">
-                <button class="btn-timer" onclick="startChallenge(180)">3분 도전</button>
-                <button class="btn-timer" onclick="startChallenge(300)">5분 도전</button>
-                <button class="btn-timer" style="background:#bbb" onclick="resetGame()">초기화</button>
+        <div class="timer-box"><div id="timerDisplay">00:00</div></div>
+        <div class="math-keypad">
+            <button class="key op" onclick="insertText('(')">(</button><button class="key op" onclick="insertText(')')">)</button><button class="key move" onclick="moveCursor(-1)">◀</button><button class="key move" onclick="moveCursor(1)">▶</button>
+            <button class="key" onclick="insertText('7')">7</button><button class="key" onclick="insertText('8')">8</button><button class="key" onclick="insertText('9')">9</button><button class="key op" onclick="insertText('÷')">÷</button>
+            <button class="key" onclick="insertText('4')">4</button><button class="key" onclick="insertText('5')">5</button><button class="key" onclick="insertText('6')">6</button><button class="key op" onclick="insertText('×')">×</button>
+            <button class="key" onclick="insertText('1')">1</button><button class="key" onclick="insertText('2')">2</button><button class="key" onclick="insertText('3')">3</button><button class="key op" onclick="insertText('-')">-</button>
+            <button class="key" onclick="insertText('0')">0</button><button class="key back" onclick="backspace()">←</button><button class="key del" onclick="clearAll()">C</button><button class="key op" onclick="insertText('+')">+</button>
+        </div>
+        <div class="record-box">
+            <div class="score-text">성공한 주문: <span id="score">0</span>건</div>
+            <div class="challenge-btns">
+                <button class="btn-sm" onclick="startChallenge(180)">3분 도전</button>
+                <button class="btn-sm" onclick="startChallenge(300)">5분 도전</button>
+                <button class="btn-sm" onclick="resetGame()" style="background:#eee;">초기화</button>
             </div>
         </div>
     </div>
     <div class="work-area">
         <div class="image-display" id="image-display"></div>
         <div class="menu-board">
-            <div class="price-section">
-                <h5>🥪 샌드위치 단가</h5>
-                <div class="price-grid">
-                    <div>🥗에그마요: 6800</div><div>🍖B.M.T: 8100</div><div>🍗치킨: 8700</div><div>🍤쉬림프: 8800</div><div>🥩스테이크: 9400</div>
-                </div>
+            <div class="board-title">🥪 샌드위치 단가</div>
+            <div class="price-row">
+                <div class="price-item">🥗 에그마요: 6800</div><div class="price-item">🍖 B.M.T: 8100</div><div class="price-item">🍗 치킨: 8700</div><div class="price-item">🍤 쉬림프: 8800</div><div class="price-item">🥩 스테이크: 9400</div>
             </div>
-            <div class="price-section" style="margin-top:35px;">
-                <h5>🥑 추가 토핑</h5>
-                <div class="price-grid">
-                    <div>🥑아보카도: 1500</div><div>🧀치즈추가: 1000</div><div>🥓베이컨: 1600</div><div>🚫추가없음: 0</div>
-                </div>
+            <div class="board-title">🥑 추가 토핑</div>
+            <div class="price-row last">
+                <div class="price-item">🥑 아보카도: 1500</div><div class="price-item">🧀 치즈추가: 1000</div><div class="price-item">🥓 베이컨: 1600</div><div class="price-item">🚫 추가없음: 0</div>
             </div>
         </div>
         <div class="equation-area">
-            <input type="text" placeholder="여기에 식을 입력하세요" id="userEq">
-            <div class="btn-group"><button class="btn-pay" onclick="checkAnswer()">결제 확인</button><button class="btn-next" onclick="generateMission()">새 미션</button></div>
-            <p id="feedback" style="margin-top:25px; font-weight:bold; font-size: 1.4rem;"></p>
+            <input type="text" id="userEq" autocomplete="off" inputmode="none" placeholder="여기에 식을 입력하세요">
+            <div class="main-action-group">
+                <button class="btn-pay" onclick="checkAnswer()">결제 확인</button>
+                <button class="btn-next" onclick="generateMission()">새 미션</button>
+            </div>
+            <p id="feedback" style="margin-top:15px; font-weight:bold; font-size: 1.3rem; min-height: 1.5em;"></p>
         </div>
     </div>
 </div>
+
 <script>
     const menus = [
         { name: "에그마요", p: 6800, img: "eggmayo.png" }, { name: "B.M.T", p: 8100, img: "bmt.png" },
@@ -94,64 +120,123 @@
     const toppings = [{ name: "아보카도", p: 1500 }, { name: "치즈추가", p: 1000 }, { name: "베이컨", p: 1600 }, { name: "추가없음", p: 0 }];
     let currentCorrect = 0, score = 0, timeLeft = 0, timerInterval = null;
 
-    function startChallenge(s) { clearInterval(timerInterval); score = 0; document.getElementById('score').innerText = score; timeLeft = s; updateTimerDisplay(); timerInterval = setInterval(() => { timeLeft--; updateTimerDisplay(); if (timeLeft <= 0) { clearInterval(timerInterval); alert(`시간 종료! 총 ${score}건 성공!`); } }, 1000); generateMission(); }
-    function updateTimerDisplay() { const m = Math.floor(timeLeft/60), s = timeLeft%60; document.getElementById('timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
-    function resetGame() { clearInterval(timerInterval); timeLeft = 0; score = 0; document.getElementById('timer').innerText = "00:00"; document.getElementById('score').innerText = "0"; generateMission(); }
+    const inputEl = document.getElementById('userEq');
+    setInterval(() => { if(document.activeElement !== inputEl) inputEl.focus(); }, 100);
+
+    function insertText(t) {
+        const s = inputEl.selectionStart;
+        inputEl.value = inputEl.value.substring(0, s) + t + inputEl.value.substring(inputEl.selectionEnd);
+        inputEl.selectionStart = inputEl.selectionEnd = s + t.length;
+        inputEl.focus();
+    }
+    function backspace() {
+        const s = inputEl.selectionStart;
+        if (s > 0) {
+            inputEl.value = inputEl.value.substring(0, s - 1) + inputEl.value.substring(s);
+            inputEl.selectionStart = inputEl.selectionEnd = s - 1;
+        }
+        inputEl.focus();
+    }
+    function clearAll() { inputEl.value = ""; inputEl.focus(); }
+    function moveCursor(d) {
+        const p = inputEl.selectionStart + d;
+        inputEl.setSelectionRange(p, p);
+        inputEl.focus();
+    }
 
     function generateMission() {
         document.getElementById('stamp').style.display = 'none';
-        document.getElementById('feedback').innerText = ''; document.getElementById('userEq').value = '';
-        document.getElementById('r-order-no').innerText = "ORDER #" + Math.floor(Math.random()*9000+1000);
+        document.getElementById('feedback').innerText = ''; inputEl.value = ""; 
+        document.getElementById('r-order-no').innerText = Math.floor(Math.random()*9000+1000);
         
-        let missionItems = [], totalVal = 0;
-        let itemCount = Math.random() > 0.5 ? 2 : 1;
-        let isItemDiscount = Math.random() > 0.5;
+        let missionItems = [], totalVal = 0, people = 1, globalDiscount = 0;
+        const isComplex = Math.random() > 0.5;
 
-        for(let i=0; i<itemCount; i++) {
+        if (isComplex) {
+            // [유형 B] 전체 금액 구하기: 메뉴 2종 합산 + 메뉴 할인 + 이벤트 할인
+            for(let i=0; i<2; i++) {
+                let m = menus[Math.floor(Math.random()*menus.length)];
+                let t = toppings[Math.floor(Math.random()*toppings.length)];
+                let q = Math.floor(Math.random()*2+1);
+                let itemDiscount = (i === 0) ? 1000 : 0; // 첫 번째 메뉴만 메뉴 할인 적용
+                
+                missionItems.push({ ...m, top: t.name, tp: t.p, qty: q, discount: itemDiscount });
+                totalVal += (m.p + t.p - itemDiscount) * q;
+            }
+            globalDiscount = 2000;
+            totalVal -= globalDiscount;
+            people = 1; 
+        } else {
+            // [유형 A] 1인당 금액 구하기: 메뉴 1종 + 메뉴 할인 + 나누기
             let m = menus[Math.floor(Math.random()*menus.length)];
             let t = toppings[Math.floor(Math.random()*toppings.length)];
-            let q = Math.floor(Math.random()*2+1);
-            let itemDiscount = (isItemDiscount && i === 0) ? 1000 : 0;
+            let q = Math.floor(Math.random()*3+2); 
+            let itemDiscount = 1000;
+            
             missionItems.push({ ...m, top: t.name, tp: t.p, qty: q, discount: itemDiscount });
-            totalVal += ((m.p + t.p) - itemDiscount) * q;
+            totalVal += (m.p + t.p - itemDiscount) * q;
+            people = [2, 4, 5][Math.floor(Math.random()*3)]; 
+            globalDiscount = 0;
         }
 
-        let people = [1, 2, 3, 4, 5][Math.floor(Math.random()*5)];
-        let globalDiscount = isItemDiscount ? 0 : 2000;
-        currentCorrect = (totalVal - globalDiscount) / people;
+        currentCorrect = totalVal / people;
+        updateUI(missionItems, globalDiscount, people);
+    }
 
+    function updateUI(items, gDc, ppl) {
         let itemHtml = "", imgHtml = "";
-        missionItems.forEach(item => {
+        items.forEach(item => {
             itemHtml += `<div class="receipt-item"><div class="item-main"><span>${item.name}</span><span>x ${item.qty}</span></div>`;
             if(item.top !== "추가없음") itemHtml += `<div class="item-sub"><span>└ ${item.top}</span></div>`;
-            else itemHtml += `<div class="item-sub"><span>└ 토핑 없음</span></div>`;
             if(item.discount > 0) itemHtml += `<div class="discount-line">└ 메뉴 할인: -${item.discount}</div>`;
             itemHtml += `</div>`;
-            imgHtml += `<div class="img-card"><img src="${item.img}" onerror="this.src='https://via.placeholder.com/300x180?text=IMG'"><span class="img-label">${item.name}</span></div>`;
+            imgHtml += `<div class="img-card"><img src="${item.img}" onerror="this.src='https://via.placeholder.com/350x220?text=${item.name}'"><div style="font-weight:bold; margin-top:10px; font-size:1.2rem;">${item.name}</div></div>`;
         });
-
         document.getElementById('receipt-items').innerHTML = itemHtml;
         document.getElementById('image-display').innerHTML = imgHtml;
         
         let summaryHtml = "";
-        if(globalDiscount > 0) summaryHtml += `<div class="item-main" style="font-size: 1.4rem; font-weight:bold; border-top: 2px solid #eee; padding-top:15px; color:#d32f2f;"><span>이벤트 할인</span><span>-${globalDiscount}</span></div>`;
-        summaryHtml += `<div class="item-main" style="margin-top:15px; font-size: 1.4rem; font-weight:bold;"><span>${people === 1 ? '결제 인원' : '나누어 낼 인원'}</span><span>${people === 1 ? '혼자 결제' : people + '명'}</span></div>`;
-        
+        if(gDc > 0) summaryHtml += `<div class="item-main" style="color:red; font-weight:bold;"><span>이벤트 할인</span><span>-${gDc}</span></div>`;
+        summaryHtml += `<div class="divider"></div><div class="item-main" style="font-weight:bold; font-size:1.1rem;"><span>${ppl===1?'결제 방식':'나누어 낼 인원'}</span><span>${ppl===1?'전체 결제':'나누기 '+ppl+'명'}</span></div>`;
         document.getElementById('receipt-summary').innerHTML = summaryHtml;
-        document.getElementById('mission-goal').innerText = people === 1 ? "❓ 최종 결제 금액은?" : "❓ 한 명당 결제 금액은?";
+        document.getElementById('mission-goal').innerText = ppl===1 ? "❓ 전체 결제 금액은 얼마일까?" : `❓ 한 명당 결제 금액은 얼마일까?`;
     }
 
     function checkAnswer() {
-        let input = document.getElementById('userEq').value.replace(/×/g, '*').replace(/÷/g, '/');
+        let f = inputEl.value.replace(/×/g, '*').replace(/÷/g, '/');
         try {
-            let userVal = eval(input);
-            if(Math.abs(userVal - currentCorrect) < 0.1) {
-                if(document.getElementById('stamp').style.display !== 'block') { score++; document.getElementById('score').innerText = score; }
+            let v = eval(f);
+            if(Math.abs(v - currentCorrect) < 0.1) {
+                if(document.getElementById('stamp').style.display !== 'block') {
+                    score++; document.getElementById('score').innerText = score;
+                }
                 document.getElementById('stamp').style.display = 'block';
-                document.getElementById('feedback').innerHTML = `<span style="color:var(--subway-green)">🎉 정답! ${userVal.toLocaleString()}원입니다.</span>`;
-            } else { document.getElementById('feedback').innerHTML = `<span style="color:#d32f2f;">❌ 결과(${userVal ? userVal.toLocaleString() : 0}원)가 틀려요!</span>`; }
-        } catch(e) { document.getElementById('feedback').innerText = "⚠️ 식을 확인하세요!"; }
+                document.getElementById('feedback').innerHTML = `<span style="color:green">🎉 정답! ${v.toLocaleString()}원</span>`;
+            } else { document.getElementById('feedback').innerHTML = `<span style="color:red">❌ 틀렸어요!</span>`; }
+        } catch(e) { document.getElementById('feedback').innerText = "⚠️ 식이 올바르지 않아요!"; }
     }
+
+    function updateTimerUI() {
+        const m = Math.floor(timeLeft / 60);
+        const s = timeLeft % 60;
+        document.getElementById('timerDisplay').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+
+    function startChallenge(s) { 
+        clearInterval(timerInterval);
+        timeLeft = s; updateTimerUI();
+        timerInterval = setInterval(() => { timeLeft--; updateTimerUI(); if (timeLeft <= 0) { clearInterval(timerInterval); alert("시간 종료!"); } }, 1000); 
+        generateMission(); 
+    }
+
+    function resetGame() {
+        clearInterval(timerInterval);
+        score = 0; timeLeft = 0;
+        document.getElementById('score').innerText = "0";
+        document.getElementById('timerDisplay').innerText = "00:00";
+        generateMission();
+    }
+
     generateMission();
 </script>
 </body>
